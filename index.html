@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi & Galeri</title>
+    <style>
+        /* Pengaturan Dasar */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7; /* Warna latar bawaan iOS */
+            color: #1c1c1e;
+            padding-bottom: 100px; /* Ruang untuk menu mengambang */
+        }
+
+        h1 {
+            padding: 20px;
+            font-size: 34px;
+            margin-bottom: 0;
+        }
+
+        /* Galeri Grid - Terkini */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 3px;
+            padding: 2px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #e5e5ea;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* Galeri Album */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .album-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .album-cover {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #d1d1d6;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .album-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .album-count {
+            font-size: 13px;
+            color: #8e8e93;
+            margin-top: -5px;
+        }
+
+        /* Menu Bar Mengambang (Floating Segmented Control) */
+        .floating-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: rgba(250, 250, 250, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 4px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8e8e93;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .nav-btn.active {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sistem Tab */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .album-card {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .album-card:hover {
+            transform: scale(1.03);
+        }
+
+        /* Album Detail Container */
+        .album-detail-container {
+            display: none;
+            animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .album-detail-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            background: rgba(242, 242, 247, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 10;
+        }
+
+        .back-btn {
+            background: #e5e5ea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #007aff;
+            background: rgba(0, 122, 255, 0.1);
+            transition: background 0.2s ease;
+        }
+        .back-btn:hover {
+            background: rgba(0, 122, 255, 0.2);
+        }
+
+        .album-detail-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+            color: #1c1c1e;
+        }
+
+        /* Photo Grid inside Album Detail */
+        .album-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px;
+            padding: 5px 20px 20px 20px;
+        }
+
+        .photo-item {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #e5e5ea;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .lightbox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            object-fit: contain;
+        }
+
+        .lightbox.show img {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 24px;
+            line-height: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terkini" class="tab-content active">
+        <h1>Terkini</h1>
+        <div class="gallery-grid">
+            <img src="https://via.placeholder.com/300" alt="Foto Lapangan 1" class="gallery-item" loading="lazy">
+            <img src="https://via.placeholder.com/300" alt="Foto Setup PC" class="gallery-item" loading="lazy">
+            <img src="https://via.placeholder.com/300" alt="Foto Proyek Robot" class="gallery-item" loading="lazy">
+            <img src="https://via.placeholder.com/300" alt="Foto Rute Distribusi" class="gallery-item" loading="lazy">
+            <img src="https://via.placeholder.com/300" alt="Foto Gudang" class="gallery-item" loading="lazy">
+        </div>
+    </div>
+
+    <div id="album" class="tab-content">
+        <!-- Tampilan Utama Daftar Album -->
+        <div id="album-main-view">
+            <h1>Album Saya</h1>
+            <div class="album-grid">
+                <div class="album-card" onclick="openAlbum('distributor')">
+                    <img src="https://via.placeholder.com/400" alt="Operasional Distributor" class="album-cover" loading="lazy">
+                    <div class="album-title">Operasional Distributor</div>
+                    <div class="album-count">12 Foto</div>
+                </div>
+                <div class="album-card" onclick="openAlbum('robotika')">
+                    <img src="https://via.placeholder.com/400" alt="Proyek Robotika" class="album-cover" loading="lazy">
+                    <div class="album-title">Proyek Robotika</div>
+                    <div class="album-count">8 Foto</div>
+                </div>
+                <div class="album-card" onclick="openAlbum('it_support')">
+                    <img src="https://via.placeholder.com/400" alt="IT Support & Setup" class="album-cover" loading="lazy">
+                    <div class="album-title">IT Support & Setup</div>
+                    <div class="album-count">5 Foto</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tampilan Detail Album -->
+        <div id="album-detail-view" class="album-detail-container">
+            <div class="album-detail-header">
+                <button class="back-btn" onclick="closeAlbum()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    Kembali
+                </button>
+                <h2 id="album-detail-title" class="album-detail-title">Nama Album</h2>
+            </div>
+            <div class="album-photo-grid" id="album-photo-grid">
+                <!-- Foto-foto album akan di-inject lewat JavaScript di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox untuk preview foto besar -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="close-btn" onclick="closeLightbox(event)">&times;</button>
+        <img id="lightbox-img" src="" alt="Zoomed Photo">
+    </div>
+
+    <div class="floating-nav">
+        <button class="nav-btn active" onclick="switchTab('terkini', this)">Terkini</button>
+        <button class="nav-btn" onclick="switchTab('album', this)">Album</button>
+    </div>
+
+    <script>
+        function switchTab(tabId, btnElement) {
+            // Sembunyikan semua tab
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Hapus status aktif dari semua tombol
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Tampilkan tab yang dipilih dan aktifkan tombolnya
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+            
+            // Opsional: Scroll otomatis ke atas saat pindah tab
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Logika khusus: saat pindah tab ke fitur lain, pastikan album di-reset ke halaman utamanya
+            if(tabId !== 'album') {
+                closeAlbum(false);
+            }
+        }
+
+        // --- Logika Fitur Album Kompleks ---
+
+        // Database dummy untuk foto-foto dalam setiap album
+        const albumData = {
+            'distributor': {
+                title: 'Operasional Distributor',
+                photos: Array.from({length: 12}, (_, i) => `https://picsum.photos/id/${10 + i}/600/600`) // Menggunakan picsum untuk gambar yg lebih realistis
+            },
+            'robotika': {
+                title: 'Proyek Robotika',
+                photos: Array.from({length: 8}, (_, i) => `https://picsum.photos/id/${110 + i}/600/600`)
+            },
+            'it_support': {
+                title: 'IT Support & Setup',
+                photos: Array.from({length: 5}, (_, i) => `https://picsum.photos/id/${210 + i}/600/600`)
+            }
+        };
+
+        function openAlbum(albumId) {
+            const data = albumData[albumId];
+            if (!data) return;
+
+            // Sembunyikan main view, tampilkan detail
+            document.getElementById('album-main-view').style.display = 'none';
+            const detailView = document.getElementById('album-detail-view');
+            detailView.style.display = 'block';
+            
+            // Set judul
+            document.getElementById('album-detail-title').innerText = data.title;
+            
+            // Render foto
+            const photoGrid = document.getElementById('album-photo-grid');
+            photoGrid.innerHTML = ''; // bersihkan grid sebelum diisi baru
+            
+            data.photos.forEach(photoSrc => {
+                const img = document.createElement('img');
+                img.src = photoSrc;
+                img.className = 'photo-item';
+                img.loading = 'lazy';
+                img.alt = 'Foto Album';
+                img.onclick = () => openLightbox(photoSrc);
+                photoGrid.appendChild(img);
+            });
+            
+            // Scroll ke atas dengan halus
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeAlbum(smoothScroll = true) {
+            const detailView = document.getElementById('album-detail-view');
+            const mainView = document.getElementById('album-main-view');
+            
+            // Jika sedap di album detail, kembalikan
+            if(detailView && detailView.style.display === 'block') {
+                detailView.style.display = 'none';
+                mainView.style.display = 'block';
+                if(smoothScroll) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }
+
+        // --- Logika Lightbox (Penampil Gambar Layar Penuh) ---
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = src;
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden'; // cegah scroll latar belakang
+        }
+
+        function closeLightbox(event) {
+            // Cegah bubbling jika menutup dari tombol close vs background
+            if(event) {
+                const isClickOnImage = event.target.id === 'lightbox-img';
+                if(isClickOnImage) return; // jangan tutup jika menekan gambar
+            }
+            
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('show');
+            document.body.style.overflow = ''; // kembalikan scroll
+            
+            // Hapus source setelah animasi selesai agar bersih
+            setTimeout(() => {
+                if(!lightbox.classList.contains('show')) {
+                    document.getElementById('lightbox-img').src = '';
+                }
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
