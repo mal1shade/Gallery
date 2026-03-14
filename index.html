@@ -334,13 +334,13 @@
             <h1>Album Saya</h1>
             <div class="album-grid">
                 <div class="album-card" onclick="openAlbum('distributor')">
-                    <img src="https://via.placeholder.com/400" alt="Operasional Distributor" class="album-cover"
+                    <img src="operasionaldistributor/pengiriman1.jpg" alt="Operasional Distributor" class="album-cover"
                         loading="lazy">
                     <div class="album-title">Operasional Distributor</div>
-                    <div class="album-count">12 Item</div>
+                    <div class="album-count">13 Item</div>
                 </div>
                 <div class="album-card" onclick="openAlbum('robotika')">
-                    <img src="https://via.placeholder.com/400" alt="Proyek Robotika" class="album-cover" loading="lazy">
+                    <img src="robotika/robotika1.png" alt="Proyek Robotika" class="album-cover" loading="lazy">
                     <div class="album-title">Proyek Robotika</div>
                     <div class="album-count">8 Item</div>
                 </div>
@@ -420,7 +420,10 @@
             },
             'robotika': {
                 title: 'Proyek Robotika',
-                media: Array.from({ length: 8 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${110 + i}/600/600` }))
+                media: [
+                    { type: 'image', src: 'robotika/robotika1.jpg' },
+                    ...Array.from({ length: 8 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${110 + i}/600/600` }))
+                ]
             },
             'it_support': {
                 title: 'IT Support & Setup',
