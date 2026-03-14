@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +10,11 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f2f2f7; /* Warna latar bawaan iOS */
+            background-color: #f2f2f7;
+            /* Warna latar bawaan iOS */
             color: #1c1c1e;
-            padding-bottom: 100px; /* Ruang untuk menu mengambang */
+            padding-bottom: 100px;
+            /* Ruang untuk menu mengambang */
         }
 
         h1 {
@@ -115,14 +118,22 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .album-card {
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
+
         .album-card:hover {
             transform: scale(1.03);
         }
@@ -134,8 +145,15 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .album-detail-header {
@@ -166,6 +184,7 @@
             background: rgba(0, 122, 255, 0.1);
             transition: background 0.2s ease;
         }
+
         .back-btn:hover {
             background: rgba(0, 122, 255, 0.2);
         }
@@ -185,19 +204,50 @@
             padding: 5px 20px 20px 20px;
         }
 
-        .photo-item {
+        .media-item {
             width: 100%;
             aspect-ratio: 1 / 1;
             background-color: #e5e5ea;
-            object-fit: cover;
             border-radius: 6px;
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: transform 0.2s ease, opacity 0.2s ease;
         }
 
-        .photo-item:hover {
+        .media-item:hover img,
+        .media-item:hover video {
             transform: scale(1.02);
             opacity: 0.9;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .play-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+            margin-left: 3px;
         }
 
         /* Lightbox Modal */
@@ -224,17 +274,19 @@
             visibility: visible;
         }
 
-        .lightbox img {
+        .lightbox img,
+        .lightbox video {
             max-width: 90%;
             max-height: 85%;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             object-fit: contain;
         }
 
-        .lightbox.show img {
+        .lightbox.show img,
+        .lightbox.show video {
             transform: scale(1);
         }
 
@@ -262,6 +314,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div id="terkini" class="tab-content active">
@@ -281,28 +334,33 @@
             <h1>Album Saya</h1>
             <div class="album-grid">
                 <div class="album-card" onclick="openAlbum('distributor')">
-                    <img src="https://via.placeholder.com/400" alt="Operasional Distributor" class="album-cover" loading="lazy">
+                    <img src="https://via.placeholder.com/400" alt="Operasional Distributor" class="album-cover"
+                        loading="lazy">
                     <div class="album-title">Operasional Distributor</div>
-                    <div class="album-count">12 Foto</div>
+                    <div class="album-count">12 Item</div>
                 </div>
                 <div class="album-card" onclick="openAlbum('robotika')">
                     <img src="https://via.placeholder.com/400" alt="Proyek Robotika" class="album-cover" loading="lazy">
                     <div class="album-title">Proyek Robotika</div>
-                    <div class="album-count">8 Foto</div>
+                    <div class="album-count">8 Item</div>
                 </div>
                 <div class="album-card" onclick="openAlbum('it_support')">
-                    <img src="https://via.placeholder.com/400" alt="IT Support & Setup" class="album-cover" loading="lazy">
+                    <img src="https://via.placeholder.com/400" alt="IT Support & Setup" class="album-cover"
+                        loading="lazy">
                     <div class="album-title">IT Support & Setup</div>
-                    <div class="album-count">5 Foto</div>
+                    <div class="album-count">5 Item</div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Tampilan Detail Album -->
         <div id="album-detail-view" class="album-detail-container">
             <div class="album-detail-header">
                 <button class="back-btn" onclick="closeAlbum()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
                     Kembali
                 </button>
                 <h2 id="album-detail-title" class="album-detail-title">Nama Album</h2>
@@ -313,10 +371,11 @@
         </div>
     </div>
 
-    <!-- Lightbox untuk preview foto besar -->
+    <!-- Lightbox untuk preview media besar -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
         <button class="close-btn" onclick="closeLightbox(event)">&times;</button>
-        <img id="lightbox-img" src="" alt="Zoomed Photo">
+        <img id="lightbox-img" src="" alt="Zoomed Media" style="display: none;">
+        <video id="lightbox-video" src="" controls style="display: none;"></video>
     </div>
 
     <div class="floating-nav">
@@ -337,31 +396,35 @@
             // Tampilkan tab yang dipilih dan aktifkan tombolnya
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
-            
+
             // Opsional: Scroll otomatis ke atas saat pindah tab
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
+
             // Logika khusus: saat pindah tab ke fitur lain, pastikan album di-reset ke halaman utamanya
-            if(tabId !== 'album') {
+            if (tabId !== 'album') {
                 closeAlbum(false);
             }
         }
 
         // --- Logika Fitur Album Kompleks ---
 
-        // Database dummy untuk foto-foto dalam setiap album
+        // Database dummy untuk media dalam setiap album (mendukung foto & video)
         const albumData = {
             'distributor': {
                 title: 'Operasional Distributor',
-                photos: Array.from({length: 12}, (_, i) => `https://picsum.photos/id/${10 + i}/600/600`) // Menggunakan picsum untuk gambar yg lebih realistis
+                media: [
+                    { type: 'video', src: 'operasionaldistributor/pengiriman1.mp4' },
+                    { type: 'image', src: 'operasionaldistributor/pengiriman1.jpg' },
+                    ...Array.from({ length: 11 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${10 + i}/600/600` }))
+                ]
             },
             'robotika': {
                 title: 'Proyek Robotika',
-                photos: Array.from({length: 8}, (_, i) => `https://picsum.photos/id/${110 + i}/600/600`)
+                media: Array.from({ length: 8 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${110 + i}/600/600` }))
             },
             'it_support': {
                 title: 'IT Support & Setup',
-                photos: Array.from({length: 5}, (_, i) => `https://picsum.photos/id/${210 + i}/600/600`)
+                media: Array.from({ length: 5 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${210 + i}/600/600` }))
             }
         };
 
@@ -373,24 +436,41 @@
             document.getElementById('album-main-view').style.display = 'none';
             const detailView = document.getElementById('album-detail-view');
             detailView.style.display = 'block';
-            
+
             // Set judul
             document.getElementById('album-detail-title').innerText = data.title;
-            
-            // Render foto
+
+            // Render media
             const photoGrid = document.getElementById('album-photo-grid');
             photoGrid.innerHTML = ''; // bersihkan grid sebelum diisi baru
-            
-            data.photos.forEach(photoSrc => {
-                const img = document.createElement('img');
-                img.src = photoSrc;
-                img.className = 'photo-item';
-                img.loading = 'lazy';
-                img.alt = 'Foto Album';
-                img.onclick = () => openLightbox(photoSrc);
-                photoGrid.appendChild(img);
+
+            data.media.forEach(item => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'media-item';
+                wrapper.onclick = () => openLightbox(item.src, item.type);
+
+                let mediaEl;
+                if (item.type === 'video') {
+                    mediaEl = document.createElement('video');
+                    mediaEl.src = item.src + '#t=0.1'; // Tampilkan frame perdana
+                    mediaEl.muted = true;
+                    // Play icon
+                    const playIcon = document.createElement('div');
+                    playIcon.className = 'play-icon';
+                    playIcon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+                    wrapper.appendChild(mediaEl);
+                    wrapper.appendChild(playIcon);
+                } else {
+                    mediaEl = document.createElement('img');
+                    mediaEl.src = item.src;
+                    mediaEl.loading = 'lazy';
+                    mediaEl.alt = 'Foto Album';
+                    wrapper.appendChild(mediaEl);
+                }
+
+                photoGrid.appendChild(wrapper);
             });
-            
+
             // Scroll ke atas dengan halus
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -398,45 +478,62 @@
         function closeAlbum(smoothScroll = true) {
             const detailView = document.getElementById('album-detail-view');
             const mainView = document.getElementById('album-main-view');
-            
+
             // Jika sedap di album detail, kembalikan
-            if(detailView && detailView.style.display === 'block') {
+            if (detailView && detailView.style.display === 'block') {
                 detailView.style.display = 'none';
                 mainView.style.display = 'block';
-                if(smoothScroll) {
+                if (smoothScroll) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             }
         }
 
-        // --- Logika Lightbox (Penampil Gambar Layar Penuh) ---
-        function openLightbox(src) {
+        // --- Logika Lightbox (Penampil Media Layar Penuh) ---
+        function openLightbox(src, type = 'image') {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = src;
+            const lightboxVideo = document.getElementById('lightbox-video');
+
+            if (type === 'video') {
+                lightboxImg.style.display = 'none';
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.src = src;
+                lightboxVideo.play();
+            } else {
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                lightboxImg.style.display = 'block';
+                lightboxImg.src = src;
+            }
+
             lightbox.classList.add('show');
             document.body.style.overflow = 'hidden'; // cegah scroll latar belakang
         }
 
         function closeLightbox(event) {
             // Cegah bubbling jika menutup dari tombol close vs background
-            if(event) {
-                const isClickOnImage = event.target.id === 'lightbox-img';
-                if(isClickOnImage) return; // jangan tutup jika menekan gambar
+            if (event) {
+                const isClickOnMedia = event.target.id === 'lightbox-img' || event.target.id === 'lightbox-video';
+                if (isClickOnMedia) return; // jangan tutup jika menekan gambar/video
             }
-            
+
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('show');
             document.body.style.overflow = ''; // kembalikan scroll
-            
+
             // Hapus source setelah animasi selesai agar bersih
             setTimeout(() => {
-                if(!lightbox.classList.contains('show')) {
+                if (!lightbox.classList.contains('show')) {
                     document.getElementById('lightbox-img').src = '';
+                    const video = document.getElementById('lightbox-video');
+                    video.pause();
+                    video.src = '';
                 }
             }, 300);
         }
     </script>
 
 </body>
+
 </html>
