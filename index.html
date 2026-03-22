@@ -37,6 +37,12 @@
             background-color: #e5e5ea;
             object-fit: cover;
             border-radius: 2px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .gallery-item:hover {
+            opacity: 0.85;
         }
 
         /* Galeri Album */
@@ -320,11 +326,11 @@
     <div id="terkini" class="tab-content active">
         <h1>Terkini</h1>
         <div class="gallery-grid">
-            <img src="recents/Adit3.webp" alt="Akmal 1" class="gallery-item" loading="lazy">
-            <img src="https://via.placeholder.com/300" alt="Foto Setup PC" class="gallery-item" loading="lazy">
-            <img src="https://via.placeholder.com/300" alt="Foto Proyek Robot" class="gallery-item" loading="lazy">
-            <img src="https://via.placeholder.com/300" alt="Foto Rute Distribusi" class="gallery-item" loading="lazy">
-            <img src="https://via.placeholder.com/300" alt="Foto Gudang" class="gallery-item" loading="lazy">
+            <img src="recents/Adit3.webp" alt="Akmal 1" class="gallery-item" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="https://via.placeholder.com/300" alt="Foto Setup PC" class="gallery-item" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="https://via.placeholder.com/300" alt="Foto Proyek Robot" class="gallery-item" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="https://via.placeholder.com/300" alt="Foto Rute Distribusi" class="gallery-item" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="https://via.placeholder.com/300" alt="Foto Gudang" class="gallery-item" loading="lazy" onclick="openLightbox(this.src)">
         </div>
     </div>
 
@@ -421,7 +427,7 @@
             'robotika': {
                 title: 'Proyek Robotika',
                 media: [
-                    { type: 'image', src: 'robotika/robotika1.png' },
+                    { type: 'image', src: 'robotika/robotika1.jpg' },
                     ...Array.from({ length: 8 }, (_, i) => ({ type: 'image', src: `https://picsum.photos/id/${110 + i}/600/600` }))
                 ]
             },
